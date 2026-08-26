@@ -56,8 +56,8 @@ class WheelCompleteSeeder extends Seeder
         }
 
         $hubOptions = [
-            ['Mozzo DT Swiss 350', 'mozzo', 0, 700, '/wheel-configurator/components/mozzo-dtswiss350.jpg'],
-            ['Mozzo DT Swiss 240', 'mozzo', 0, 700, '/wheel-configurator/components/mozzo-dtswiss240.jpg'],
+            ['Mozzo DT Swiss 350', 'mozzo', 0, 300, '/wheel-configurator/components/mozzo-dtswiss350.jpg'],
+            ['Mozzo DT Swiss 240', 'mozzo', 0, 450, '/wheel-configurator/components/mozzo-dtswiss240.jpg'],
             ['Mozzo DT Swiss 180', 'mozzo', 0, 700, '/wheel-configurator/components/mozzo-dtswiss180.jpg'],
             ['Mozzo Extralight', 'mozzo', 0, 700, '/wheel-configurator/components/mozzo-extralight.jpeg'],
             ['Mozzo Damil', 'mozzo', 0, 300, '/wheel-configurator/components/mozzo-damil.webp'],
