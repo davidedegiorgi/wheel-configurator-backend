@@ -7,6 +7,5 @@ php artisan optimize:clear
 php artisan tinker --execute='echo "MAIL_MAILER=".config("mail.default").PHP_EOL; echo "MAIL_HOST=".config("mail.mailers.smtp.host").PHP_EOL; echo "MAIL_FROM=".config("mail.from.address").PHP_EOL;'
 
 php artisan migrate --force --no-interaction
-php artisan db:seed --class=Database\\Seeders\\SyncAudiColorsSeeder --force
 
 exec php artisan serve --host=0.0.0.0 --port="${PORT:-10000}"
