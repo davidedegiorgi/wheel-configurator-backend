@@ -43,7 +43,6 @@ class AuthController extends Controller
             ], 401);
         }
 
-
         return response()->json([
             'message' => 'Login effettuato con successo',
             'user' => $result['user'],

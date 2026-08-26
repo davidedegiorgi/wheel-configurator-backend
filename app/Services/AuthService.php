@@ -5,11 +5,13 @@ namespace App\Services;
 use App\Models\Configuration;
 use App\Models\Quote;
 use App\Models\User;
+use App\Notifications\AccountCreatedNotification;
 use App\Notifications\AccountDeletedNotification;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
@@ -20,7 +22,7 @@ class AuthService
      */
     public function register(array $data): User
     {
-        return User::create([
+        $user = User::create([
             'name' => $this->formatName($data['name']),
             'last_name' => $this->formatName($data['last_name']),
             'email' => $data['email'],
@@ -28,6 +30,10 @@ class AuthService
             'role' => 'user',
             'email_verified_at' => now(),
         ]);
+
+        $user->notify(new AccountCreatedNotification());
+
+        return $user;
     }
 
     /**
@@ -113,7 +119,14 @@ class AuthService
             $user->delete();
         });
 
-        Notification::route('mail', $email)->notify(new AccountDeletedNotification($name));
+        try {
+            Notification::route('mail', $email)->notify(new AccountDeletedNotification($name));
+        } catch (\Throwable $exception) {
+            Log::warning('Account deletion email failed', [
+                'email' => $email,
+                'message' => $exception->getMessage(),
+            ]);
+        }
     }
 
     private function formatName(string $value): string
