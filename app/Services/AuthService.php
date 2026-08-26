@@ -73,9 +73,18 @@ class AuthService
 
     public function sendPasswordResetLink(array $data): string
     {
-        return Password::sendResetLink([
-            'email' => $data['email'],
-        ]);
+        try {
+            return Password::sendResetLink([
+                'email' => $data['email'],
+            ]);
+        } catch (\Throwable $exception) {
+            Log::warning('Password reset email failed', [
+                'email' => $data['email'],
+                'message' => $exception->getMessage(),
+            ]);
+
+            return Password::RESET_LINK_SENT;
+        }
     }
 
     public function resetPassword(array $data): string
