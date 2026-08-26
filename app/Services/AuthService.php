@@ -31,7 +31,7 @@ class AuthService
             'email_verified_at' => now(),
         ]);
 
-        $user->notify(new AccountCreatedNotification());
+        $this->notifyAfterResponse($user, new AccountCreatedNotification(), 'Account created email failed');
 
         return $user;
     }
@@ -119,18 +119,34 @@ class AuthService
             $user->delete();
         });
 
-        try {
-            Notification::route('mail', $email)->notify(new AccountDeletedNotification($name));
-        } catch (\Throwable $exception) {
-            Log::warning('Account deletion email failed', [
-                'email' => $email,
-                'message' => $exception->getMessage(),
-            ]);
-        }
+        app()->terminating(function () use ($email, $name) {
+            try {
+                Notification::route('mail', $email)->notify(new AccountDeletedNotification($name));
+            } catch (\Throwable $exception) {
+                Log::warning('Account deletion email failed', [
+                    'email' => $email,
+                    'message' => $exception->getMessage(),
+                ]);
+            }
+        });
     }
 
     private function formatName(string $value): string
     {
         return (string) Str::of($value)->trim()->squish()->title();
+    }
+
+    private function notifyAfterResponse(User $user, object $notification, string $logMessage): void
+    {
+        app()->terminating(function () use ($user, $notification, $logMessage) {
+            try {
+                $user->notify($notification);
+            } catch (\Throwable $exception) {
+                Log::warning($logMessage, [
+                    'email' => $user->email,
+                    'message' => $exception->getMessage(),
+                ]);
+            }
+        });
     }
 }
