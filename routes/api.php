@@ -74,6 +74,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('/admin/quotes/by-status', [AdminController::class, 'getQuotesByStatus']);
     Route::get('/admin/wheel-categories/popular', [AdminController::class, 'getPopularWheelCategories']);
     Route::get('/admin/revenue/by-month', [AdminController::class, 'getRevenueByMonth']);
+    Route::post('/admin/mail/test', [AdminController::class, 'testMail']);
 
     // Gestione Catalogo
     Route::post('/wheel-categories', [WheelCategoryController::class, 'store']);

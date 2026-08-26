@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Services\AdminService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
 {
@@ -75,6 +77,37 @@ class AdminController extends Controller
         
         return response()->json([
             'revenue' => $revenue,
+        ]);
+    }
+
+    public function testMail(Request $request)
+    {
+        $data = $request->validate([
+            'email' => ['nullable', 'email'],
+        ]);
+
+        $to = $data['email'] ?? $request->user()->email;
+
+        try {
+            Mail::raw('Test invio email da Antwheels.', function ($message) use ($to) {
+                $message->to($to)->subject('Test email Antwheels');
+            });
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'message' => 'Invio email fallito',
+                'error' => $exception->getMessage(),
+                'mailer' => config('mail.default'),
+                'host' => config('mail.mailers.smtp.host'),
+                'from' => config('mail.from.address'),
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'Email di test inviata',
+            'mailer' => config('mail.default'),
+            'host' => config('mail.mailers.smtp.host'),
+            'from' => config('mail.from.address'),
+            'to' => $to,
         ]);
     }
 }
