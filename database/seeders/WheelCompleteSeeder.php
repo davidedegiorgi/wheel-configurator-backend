@@ -98,7 +98,7 @@ class WheelCompleteSeeder extends Seeder
             ['name' => 'Profilo 60 mm', 'description' => null, 'price' => 800, 'category' => 'profilo', 'exclusive_group' => 'profile', 'image_url' => null],
             ['name' => 'Profilo 45/50mm wave', 'description' => null, 'price' => 800, 'category' => 'profilo', 'exclusive_group' => 'profile', 'image_url' => null],
             ['name' => 'Profilo 40 mm', 'description' => null, 'price' => 800, 'category' => 'profilo', 'exclusive_group' => 'profile', 'image_url' => null],
-            ['name' => 'Profilo 35/40mm', 'description' => null, 'price' => 800, 'category' => 'profilo', 'exclusive_group' => 'profile', 'image_url' => null],
+            ['name' => 'Profilo 35/40mm wave', 'description' => null, 'price' => 800, 'category' => 'profilo', 'exclusive_group' => 'profile', 'image_url' => null],
 
             ['name' => 'Sapim CX-Ray', 'description' => null, 'price' => 3, 'category' => 'raggi', 'exclusive_group' => 'spoke', 'image_url' => null],
             ['name' => 'Sapim Laser', 'description' => null, 'price' => 1.60, 'category' => 'raggi', 'exclusive_group' => 'spoke', 'image_url' => null],

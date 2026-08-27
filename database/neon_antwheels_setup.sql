@@ -273,7 +273,7 @@ INSERT INTO wheel_components (id, name, description, price, category, exclusive_
 (10, 'Raggi Carbon', NULL, 10.00, 'raggi', 'spoke', '/wheel-configurator/components/raggio-carbon.webp', NOW(), NOW()),
 (11, 'Raggi Berd', NULL, 10.00, 'raggi', 'spoke', '/wheel-configurator/components/raggio-berd.png', NOW(), NOW()),
 (12, 'Profilo 40 mm', NULL, 800.00, 'profilo', 'profile', NULL, NOW(), NOW()),
-(13, 'Profilo 35/40mm', NULL, 800.00, 'profilo', 'profile', NULL, NOW(), NOW());
+(13, 'Profilo 35/40mm wave', NULL, 800.00, 'profilo', 'profile', NULL, NOW(), NOW());
 
 SELECT setval(pg_get_serial_sequence('migrations', 'id'), (SELECT MAX(id) FROM migrations));
 SELECT setval(pg_get_serial_sequence('wheel_categories', 'id'), (SELECT MAX(id) FROM wheel_categories));
