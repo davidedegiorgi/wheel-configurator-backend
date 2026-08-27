@@ -5,9 +5,6 @@ namespace App\Services;
 use App\Models\Configuration;
 use App\Models\Quote;
 use App\Models\User;
-use App\Notifications\AccountCreatedNotification;
-use App\Notifications\AccountDeletedNotification;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -17,6 +14,8 @@ use Illuminate\Support\Str;
 
 class AuthService
 {
+    public function __construct(private readonly BrevoMailService $brevoMailService) {}
+
     /**
      * Register a new user
      */
@@ -31,7 +30,11 @@ class AuthService
             'email_verified_at' => now(),
         ]);
 
-        $this->notifyAfterResponse($user, new AccountCreatedNotification(), 'Account created email failed');
+        $this->sendAfterResponse(
+            fn () => $this->brevoMailService->sendAccountCreated($user),
+            'Account created email failed',
+            $user->email
+        );
 
         return $user;
     }
@@ -128,16 +131,11 @@ class AuthService
             $user->delete();
         });
 
-        app()->terminating(function () use ($email, $name) {
-            try {
-                Notification::route('mail', $email)->notify(new AccountDeletedNotification($name));
-            } catch (\Throwable $exception) {
-                Log::warning('Account deletion email failed', [
-                    'email' => $email,
-                    'message' => $exception->getMessage(),
-                ]);
-            }
-        });
+        $this->sendAfterResponse(
+            fn () => $this->brevoMailService->sendAccountDeleted($email, $name),
+            'Account deletion email failed',
+            $email
+        );
     }
 
     private function formatName(string $value): string
@@ -145,14 +143,14 @@ class AuthService
         return (string) Str::of($value)->trim()->squish()->title();
     }
 
-    private function notifyAfterResponse(User $user, object $notification, string $logMessage): void
+    private function sendAfterResponse(callable $sendEmail, string $logMessage, string $email): void
     {
-        app()->terminating(function () use ($user, $notification, $logMessage) {
+        app()->terminating(function () use ($sendEmail, $logMessage, $email) {
             try {
-                $user->notify($notification);
+                $sendEmail();
             } catch (\Throwable $exception) {
                 Log::warning($logMessage, [
-                    'email' => $user->email,
+                    'email' => $email,
                     'message' => $exception->getMessage(),
                 ]);
             }

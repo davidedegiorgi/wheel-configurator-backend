@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Services\AdminService;
+use App\Services\BrevoMailService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
 {
     public function __construct(
-        protected AdminService $adminService
+        protected AdminService $adminService,
+        protected BrevoMailService $brevoMailService
     ) {}
 
     /**
@@ -89,23 +90,17 @@ class AdminController extends Controller
         $to = $data['email'] ?? $request->user()->email;
 
         try {
-            Mail::raw('Test invio email da Antwheels.', function ($message) use ($to) {
-                $message->to($to)->subject('Test email Antwheels');
-            });
+            $this->brevoMailService->sendTest($to);
         } catch (\Throwable $exception) {
             return response()->json([
                 'message' => 'Invio email fallito',
                 'error' => $exception->getMessage(),
-                'mailer' => config('mail.default'),
-                'host' => config('mail.mailers.smtp.host'),
                 'from' => config('mail.from.address'),
             ], 500);
         }
 
         return response()->json([
             'message' => 'Email di test inviata',
-            'mailer' => config('mail.default'),
-            'host' => config('mail.mailers.smtp.host'),
             'from' => config('mail.from.address'),
             'to' => $to,
         ]);
