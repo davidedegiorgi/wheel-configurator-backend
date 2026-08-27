@@ -83,7 +83,12 @@ class BrevoMailService
 
         $fromEmail = config('mail.from.address');
         $fromName = config('mail.from.name');
-        $textContent = implode("\n\n", $lines);
+        $footerLines = [
+            'Messaggio automatico inviato da Antwheels. Ti chiediamo di non rispondere a questa email.',
+            'Contatti: +39 3283162784 - paolascorrano972@gmail.com',
+        ];
+        $textContent = implode("\n\n", [...$lines, ...$footerLines]);
+        $htmlContent = $this->withFooter($htmlContent ?? '<p>' . implode('</p><p>', array_map('e', $lines)) . '</p>');
 
         $response = Http::withHeaders([
             'accept' => 'application/json',
@@ -102,11 +107,24 @@ class BrevoMailService
             ],
             'subject' => $subject,
             'textContent' => $textContent,
-            'htmlContent' => $htmlContent ?? '<p>' . implode('</p><p>', array_map('e', $lines)) . '</p>',
+            'htmlContent' => $htmlContent,
         ]);
 
         if ($response->failed()) {
             throw new RuntimeException('Brevo API error ' . $response->status() . ': ' . $response->body());
         }
+    }
+
+    private function withFooter(string $htmlContent): string
+    {
+        return $htmlContent
+            . '<hr style="border: 0; border-top: 1px solid #e5e5e5; margin: 28px 0 16px;">'
+            . '<p style="font-size: 13px; color: #666; line-height: 1.5;">'
+            . 'Messaggio automatico inviato da Antwheels. Ti chiediamo di non rispondere a questa email.'
+            . '</p>'
+            . '<p style="font-size: 13px; color: #666; line-height: 1.5;">'
+            . 'Contatti: <a href="tel:+393283162784" style="color: #111;">+39 3283162784</a> · '
+            . '<a href="mailto:paolascorrano972@gmail.com" style="color: #111;">paolascorrano972@gmail.com</a>'
+            . '</p>';
     }
 }
