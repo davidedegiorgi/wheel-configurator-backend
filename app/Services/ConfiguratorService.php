@@ -18,7 +18,7 @@ class ConfiguratorService
 
         $subtotal = $basePrice + $wheelHubPrice + $componentsPrice;
 
-        return $subtotal * 1.10;
+        return $subtotal * 1.12;
     }
 
     private function calculateComponentsPrice(Configuration $configuration): float

@@ -14,7 +14,7 @@ class ExportService
         $components = $this->buildComponentRows($quote);
         $componentsTotal = array_sum(array_column($components, 'price'));
         $subtotal = $componentsTotal;
-        $surcharge = $subtotal * 0.10;
+        $surcharge = $subtotal * 0.12;
 
         return $this->buildModernPDF($quote, $components, $componentsTotal, $subtotal, $surcharge);
     }
@@ -151,7 +151,7 @@ class ExportService
         $summaryY = max(120, $y - 70);
         $content .= $this->text('Riepilogo', 42, $summaryY + 48, 14, true, '0.08 0.08 0.08');
         $content .= $this->priceRow('Componenti', $componentsTotal, 42, $summaryY + 22);
-        $content .= $this->priceRow('Maggiorazione 10%', $surcharge, 42, $summaryY + 2);
+        $content .= $this->priceRow('Maggiorazione 12%', $surcharge, 42, $summaryY + 2);
         $content .= $this->text('Totale', 42, $summaryY - 46, 18, true, '0.08 0.08 0.08');
         $content .= $this->text('EUR ' . number_format((float) $quote->total_amount, 2, ',', '.'), 410, $summaryY - 46, 18, false, '0.08 0.08 0.08');
 
