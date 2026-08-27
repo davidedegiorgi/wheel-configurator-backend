@@ -58,17 +58,11 @@ class BrevoMailService
                 'Il link resta valido per 60 minuti.',
                 'Se non hai richiesto tu il recupero password, puoi ignorare questa email.',
             ],
-            '<div style="font-family: Arial, sans-serif; color: #111; line-height: 1.6;">'
-                . '<p>Ciao ' . e($user->name) . ',</p>'
+            '<p>Ciao ' . e($user->name) . ',</p>'
                 . '<p>Abbiamo ricevuto una richiesta per reimpostare la password del tuo account Antwheels.</p>'
-                . '<p style="margin: 28px 0;">'
-                . '<a href="' . e($resetUrl) . '" style="display: inline-block; background: #050505; color: #ffffff; padding: 13px 22px; border-radius: 6px; text-decoration: none; font-weight: 700;">Reimposta password</a>'
-                . '</p>'
-                . '<p>Se il pulsante non funziona, copia e incolla questo link nel browser:</p>'
-                . '<p style="word-break: break-all;"><a href="' . e($resetUrl) . '" style="color: #111;">' . e($resetUrl) . '</a></p>'
+                . '<p><a href="' . e($resetUrl) . '">Reimposta password</a></p>'
                 . '<p>Il link resta valido per 60 minuti.</p>'
                 . '<p>Se non hai richiesto tu il recupero password, puoi ignorare questa email.</p>'
-                . '</div>'
         );
     }
 
