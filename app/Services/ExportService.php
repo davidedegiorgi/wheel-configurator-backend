@@ -61,7 +61,7 @@ class ExportService
 
     private function componentName(string $name): string
     {
-        return preg_replace('/^Profilo\s+(\d+)\s*mm$/i', '$1mm', $name) ?? $name;
+        return preg_replace(['/^Profilo\s+/i', '/\s+mm/i'], ['', 'mm'], $name) ?? $name;
     }
 
     private function componentMeta(Quote $quote, $optional): string

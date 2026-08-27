@@ -264,14 +264,16 @@ INSERT INTO wheel_components (id, name, description, price, category, exclusive_
 (1, 'Profilo 20 mm', NULL, 800.00, 'profilo', 'profile', NULL, NOW(), NOW()),
 (2, 'Profilo 30 mm', NULL, 760.00, 'profilo', 'profile', NULL, NOW(), NOW()),
 (3, 'Profilo 45 mm', NULL, 800.00, 'profilo', 'profile', NULL, NOW(), NOW()),
-(4, 'Profilo 50 mm', NULL, 800.00, 'profilo', 'profile', NULL, NOW(), NOW()),
+(4, 'Profilo 45/50mm wave', NULL, 800.00, 'profilo', 'profile', NULL, NOW(), NOW()),
 (5, 'Profilo 60 mm', NULL, 800.00, 'profilo', 'profile', NULL, NOW(), NOW()),
 (6, 'Sapim CX-Ray', NULL, 3.00, 'raggi', 'spoke', NULL, NOW(), NOW()),
 (7, 'Sapim Laser', NULL, 1.60, 'raggi', 'spoke', NULL, NOW(), NOW()),
 (8, 'Sapim Sprint', NULL, 1.60, 'raggi', 'spoke', NULL, NOW(), NOW()),
 (9, 'Sapim Leader', NULL, 1.00, 'raggi', 'spoke', NULL, NOW(), NOW()),
 (10, 'Raggi Carbon', NULL, 10.00, 'raggi', 'spoke', '/wheel-configurator/components/raggio-carbon.webp', NOW(), NOW()),
-(11, 'Raggi Berd', NULL, 10.00, 'raggi', 'spoke', '/wheel-configurator/components/raggio-berd.png', NOW(), NOW());
+(11, 'Raggi Berd', NULL, 10.00, 'raggi', 'spoke', '/wheel-configurator/components/raggio-berd.png', NOW(), NOW()),
+(12, 'Profilo 40 mm', NULL, 800.00, 'profilo', 'profile', NULL, NOW(), NOW()),
+(13, 'Profilo 35/40mm', NULL, 800.00, 'profilo', 'profile', NULL, NOW(), NOW());
 
 SELECT setval(pg_get_serial_sequence('migrations', 'id'), COALESCE(MAX(id), 1), true) FROM migrations;
 SELECT setval(pg_get_serial_sequence('wheel_categories', 'id'), COALESCE(MAX(id), 1), true) FROM wheel_categories;
